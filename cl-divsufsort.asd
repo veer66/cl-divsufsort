@@ -15,4 +15,4 @@
 		:components ((:file "test-package")
 			     (:file "cl-divsufsort-tests"))))
   :perform (test-op (o c)
-		    (symbol-call :fiveam '#:run! :int-lg-suite)))
+		    (symbol-call :fiveam '#:run! :cl-divsufsort-suite)))

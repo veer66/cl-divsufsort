@@ -1,8 +1,8 @@
 (in-package #:cl-divsufsort-tests)
 
-(def-suite :int-lg-suite)
+(def-suite :cl-divsufsort-suite)
 
-(in-suite :int-lg-suite)
+(def-suite* :int-lg-suite :in :cl-divsufsort-suite)
 
 (test int-lg-test
   (loop for n in
