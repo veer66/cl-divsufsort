@@ -11,17 +11,26 @@
 		7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7
 		7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7)))
 
-(defun int-lg (value)
-  (declare (type fixnum value)
-	   (optimize (speed 3) (safety 0) (debug 0) (space 0)))
-  (cond ((> (logand value #xff00000000000000) 0) (+ 56 (aref *lg-table* (logand (ash value -56) #xff))))
-	((> (logand value #xff000000000000) 0) (+ 48 (aref *lg-table* (logand (ash value -48) #xff))))
-	((> (logand value #xff0000000000) 0) (+ 40 (aref *lg-table* (logand (ash value -40) #xff))))
-	((> (logand value #xff00000000) 0) (+ 32 (aref *lg-table* (logand (ash value -32) #xff))))
-	((> (logand value #xff000000) 0) (+ 24 (aref *lg-table* (logand (ash value -24) #xff))))
-	((> (logand value #xff0000) 0) (+ 16 (aref *lg-table* (logand (ash value -16) #xff))))
-	((> (logand value #xff00) 0) (+ 8 (aref *lg-table* (logand (ash value -8) #xff))))
-	(t (+ 0 (aref *lg-table* (logand (ash value 0) #xff))))))
+(defmacro int-lg-byte (value shift)
+  `(+ ,shift (aref *lg-table* (logand (ash ,value (- ,shift)) #xff))))
+
+(defmacro int-lg-check (value shift)
+  `(< 0 (logand ,value (ash #xff ,shift))))
+
+(defmacro define-int-lg-function (name)
+  `(defun ,name (value)
+     (declare (type fixnum value)
+	      (optimize (speed 3) (safety 0) (debug 0) (space 0)))
+     (cond ((and (int-lg-check value 56) t) (int-lg-byte value 56))
+	   ((and (int-lg-check value 48) t) (int-lg-byte value 48))
+	   ((and (int-lg-check value 40) t) (int-lg-byte value 40))
+	   ((and (int-lg-check value 32) t) (int-lg-byte value 32))
+	   ((and (int-lg-check value 24) t) (int-lg-byte value 24))
+	   ((and (int-lg-check value 16) t) (int-lg-byte value 16))
+	   ((and (int-lg-check value 8) t) (int-lg-byte value 8))
+	   (t (int-lg-byte value 0)))))
+
+(define-int-lg-function int-lg)
 
 (defun tandem-repeat-insertion-sort (arr first last suffix-rank)
   (declare (type fixnum first last)
