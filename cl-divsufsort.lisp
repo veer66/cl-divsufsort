@@ -29,10 +29,10 @@
 (defun high-int-lg-helper (value shift)
   (declare (type fixnum value shift)
 	   (optimize (speed 3) (safety 0) (debug 0) (space 0)))
-  (let ((byte (ash value (- shift))))
+  (let ((byte (logand (ash value (- shift)) #xff)))
     (if (= byte 0)
         (high-int-lg-helper value (- shift 8))
-        (int-lg-lookup value shift))))
+        (+ shift (aref *lg-table* byte)))))
 
 (defmacro high-int-lg (value shift)
   `(high-int-lg-helper ,value ,shift))

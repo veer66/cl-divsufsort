@@ -16,4 +16,4 @@
 	   (is (= (cl-divsufsort::int-lg n)
 		  (if (= n 0)
 		      -1
-		      (floor (log n 2)))))))
+		      (1- (integer-length n)))))))
