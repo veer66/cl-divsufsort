@@ -17,18 +17,19 @@
 (defmacro int-lg-check (value shift)
   `(< 0 (logand ,value (ash #xff ,shift))))
 
+(defmacro int-lg-cond (value)
+  (append (list 'cond)
+	  (loop for shift in '(56 48 40 32 24 16 8)
+		collect
+		(list (list 'int-lg-check value shift)
+		      (list 'int-lg-byte value shift)))
+	  (list (list 't (list 'int-lg-byte value 0)))))
+
 (defmacro define-int-lg-function (name)
   `(defun ,name (value)
      (declare (type fixnum value)
 	      (optimize (speed 3) (safety 0) (debug 0) (space 0)))
-     (cond ((and (int-lg-check value 56) t) (int-lg-byte value 56))
-	   ((and (int-lg-check value 48) t) (int-lg-byte value 48))
-	   ((and (int-lg-check value 40) t) (int-lg-byte value 40))
-	   ((and (int-lg-check value 32) t) (int-lg-byte value 32))
-	   ((and (int-lg-check value 24) t) (int-lg-byte value 24))
-	   ((and (int-lg-check value 16) t) (int-lg-byte value 16))
-	   ((and (int-lg-check value 8) t) (int-lg-byte value 8))
-	   (t (int-lg-byte value 0)))))
+     (int-lg-cond value)))
 
 (define-int-lg-function int-lg)
 
