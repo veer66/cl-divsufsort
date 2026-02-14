@@ -14,40 +14,26 @@
 (defmacro int-lg-lookup (value shift)
   `(+ ,shift (aref *lg-table* (logand (ash ,value (- ,shift)) #xff))))
 
-(defun low-int-lg-helper (value shift)
-  (declare (type fixnum value shift)
-	   (optimize (speed 3) (safety 0) (debug 0) (space 0)))
-  (if (= (logand value (ash #xff shift)) 0)
-      (if (= shift 0)
-          (int-lg-lookup value 0)
-          (low-int-lg-helper value (- shift 8)))
-      (int-lg-lookup value shift)))
+(defmacro high-int-lg (value shift)
+  `(if (= (ash ,value (- ,shift)) 0)
+       (int-lg-lookup ,value ,shift)
+       (int-lg-lookup ,value (- ,shift 8))))
 
 (defmacro low-int-lg (value shift)
-  `(low-int-lg-helper ,value ,shift))
-
-(defun high-int-lg-helper (value shift)
-  (declare (type fixnum value shift)
-	   (optimize (speed 3) (safety 0) (debug 0) (space 0)))
-  (let ((byte (logand (ash value (- shift)) #xff)))
-    (if (= byte 0)
-        (high-int-lg-helper value (- shift 8))
-        (+ shift (aref *lg-table* byte)))))
-
-(defmacro high-int-lg (value shift)
-  `(high-int-lg-helper ,value ,shift))
+  `(if (= (logand ,value (ash #xff ,shift)) 0)
+       (int-lg-lookup ,value ,shift)
+       (int-lg-lookup ,value (- 8 ,shift))))
 
 (defun int-lg (value)
   (declare (type fixnum value)
 	   (optimize (speed 3) (safety 0) (debug 0) (space 0)))
-  (cond
-    ((= value 0) -1)
-    ((= (ash value -32) 0)
-     (low-int-lg value 24))
-    ((= (ash value -48) 0)
-     (high-int-lg value 48))
-    (t
-     (high-int-lg value 56))))
+  (if (= (ash value -32) 0)
+      (if (= (ash value (- 48)) 0)
+	  (high-int-lg value 56)
+	  (high-int-lg value 48))
+      (if (= (logand value #xffff0000) 0)
+	  (low-int-lg value 24)
+	  (low-int-lg value 8))))
 
 (defun tandem-repeat-insertion-sort (arr first last suffix-rank)
   (declare (type fixnum first last)
@@ -70,6 +56,3 @@
 	    (setf (aref arr j) (lognot (aref arr j))))
 	  (setf (aref arr (1+ j)) arr-value-i)))
   arr)
-
-;;(disassemble 'tandem-repeat-insertion-sort)
-
