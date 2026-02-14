@@ -1,6 +1,6 @@
 (in-package cl-divsufsort)
 
-(defconstant +lg-table+
+(defvar *lg-table*
   (make-array 256 :initial-contents
 	      '(-1 0 1 1 2 2 2 2 3 3 3 3 3 3 3 3 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4 4
 		5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5 5
@@ -12,7 +12,7 @@
 		7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7)))
 
 (defmacro int-lg-lookup (value shift)
-  `(+ ,shift (aref +lg-table+ (logand (ash ,value (- ,shift)) #xff))))
+  `(+ ,shift (aref *lg-table* (logand (ash ,value (- ,shift)) #xff))))
 
 (defun low-int-lg-helper (value shift)
   (declare (type fixnum value shift)
