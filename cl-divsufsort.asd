@@ -11,7 +11,8 @@
 
 (defsystem "cl-divsufsort/tests"
   :depends-on ("cl-divsufsort" "fiveam")
-    :components ((:module "tests"
-		  :components ((:file "cl-divsufsort-tests"))))
-    :perform (test-op (o c)
-		      (symbol-call :fiveam '#:run!)))
+  :components ((:module "tests"
+		:components ((:file "package")
+			     (:file "cl-divsufsort-tests"))))
+  :perform (test-op (o c)
+		    (symbol-call :fiveam '#:run!)))

@@ -1,5 +1,2 @@
-;;
-
 (defpackage #:cl-divsufsort
-  (:use #:cl)
-  )
+  (:use #:cl))

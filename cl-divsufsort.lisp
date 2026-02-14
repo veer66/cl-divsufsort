@@ -57,4 +57,5 @@
 	  (setf (aref arr (1+ j)) arr-value-i)))
   arr)
 
-(disassemble 'tandem-repeat-insertion-sort)
+;;(disassemble 'tandem-repeat-insertion-sort)
+
