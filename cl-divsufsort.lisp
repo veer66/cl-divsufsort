@@ -11,24 +11,10 @@
 		7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7
 		7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7)))
 
-(defmacro int-lg-lookup (value shift)
-  `(+ ,shift (aref *lg-table* (logand (ash ,value (- ,shift)) #xff))))
-
-(defmacro high-int-lg (value shift)
-  `(if (= (ash ,value (- ,shift)) 0)
-       (int-lg-lookup ,value ,shift)
-       (int-lg-lookup ,value (- ,shift 8))))
-
-(defmacro low-int-lg (value shift)
-  `(if (= (logand ,value (ash #xff ,shift)) 0)
-       (int-lg-lookup ,value ,shift)
-       (int-lg-lookup ,value (- 8 ,shift))))
-
 (defun int-lg (value)
   (declare (type fixnum value)
 	   (optimize (speed 3) (safety 0) (debug 0) (space 0)))
-  (cond ((= value 0) -1)
-	((> (logand value #xff00000000000000) 0) (+ 56 (aref *lg-table* (logand (ash value -56) #xff))))
+  (cond ((> (logand value #xff00000000000000) 0) (+ 56 (aref *lg-table* (logand (ash value -56) #xff))))
 	((> (logand value #xff000000000000) 0) (+ 48 (aref *lg-table* (logand (ash value -48) #xff))))
 	((> (logand value #xff0000000000) 0) (+ 40 (aref *lg-table* (logand (ash value -40) #xff))))
 	((> (logand value #xff00000000) 0) (+ 32 (aref *lg-table* (logand (ash value -32) #xff))))
