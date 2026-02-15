@@ -79,6 +79,7 @@
   (declare (type fixnum size)
 	   (type (simple-array fixnum *) suffix-rank suffix-array)
 	   (optimize (speed 3) (safety 0) (debug 0) (space 0)))
+  (when (< size 2) (return-from tandem-repeat-heap-sort suffix-array))
   (let ((m size)
 	(temp))
     (when (zerop (mod size 2))
