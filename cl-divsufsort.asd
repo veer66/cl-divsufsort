@@ -19,7 +19,8 @@
 			     (:file "tandem-repeat-insertion-sort-suite")
 			     (:file "tandem-repeat-fix-down-suite")
 			     (:file "tandem-repeat-heap-sort-suite")
-			     (:file "tandem-repeat-median3-suite"))))
+			     (:file "tandem-repeat-median3-suite")
+			     (:file "tandem-repeat-median5-suite"))))
   :perform (test-op (o c)
 		    (symbol-call :fiveam '#:run! :cl-divsufsort-suite)))
 
