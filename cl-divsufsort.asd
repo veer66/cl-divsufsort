@@ -6,6 +6,7 @@
   :depends-on (#:uiop)
   :serial t
   :components ((:file "package")
+	       (:file "tandem-repeat-sort")
                (:file "cl-divsufsort"))
   :in-order-to ((test-op (test-op "cl-divsufsort/tests"))))
 
