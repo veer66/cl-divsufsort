@@ -4,5 +4,6 @@
            #:int-lg-lookup
            #:high-int-lg
            #:low-int-lg
-           #:tandem-repeat-insertion-sort))
+           #:tandem-repeat-insertion-sort
+           #:tandem-repeat-fix-down))
 
