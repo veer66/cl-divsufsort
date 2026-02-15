@@ -22,7 +22,8 @@
 			     (:file "tandem-repeat-median3-suite")
 			     (:file "tandem-repeat-median5-suite")
 			     (:file "tandem-repeat-partition-suite")
-			     (:file "tandem-repeat-copy-suite"))))
+			     (:file "tandem-repeat-copy-suite")
+			     (:file "tandem-repeat-partial-copy-suite"))))
   :perform (test-op (o c)
 		    (symbol-call :fiveam '#:run! :cl-divsufsort-suite)))
 
