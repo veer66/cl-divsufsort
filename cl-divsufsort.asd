@@ -25,7 +25,8 @@
 			     (:file "tandem-repeat-copy-suite")
 			     (:file "tandem-repeat-partial-copy-suite")
 			     (:file "tandem-repeat-pivot-suite")
-			     (:file "tandem-repeat-budget-suite"))))
+(:file "tandem-repeat-budget-suite")
+               (:file "tandem-repeat-intro-sort-suite"))))
   :perform (test-op (o c)
 		    (symbol-call :fiveam '#:run! :cl-divsufsort-suite)))
 

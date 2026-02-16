@@ -294,3 +294,14 @@
          (incf (tandem-repeat-budget-remain budget) (tandem-repeat-budget-incval budget))
          (decf (tandem-repeat-budget-chance budget))
          t)))
+
+(defconstant +tr-insertion-sort-threshold+ 32)
+(defconstant +tr-stacksize+ 128)
+
+(defun tandem-repeat-sort (suffix-rank suffix-array inverse-suffix-array first last budget)
+  (declare (type fixnum first last)
+           (type (simple-array fixnum *) suffix-rank suffix-array inverse-suffix-array)
+           (type tandem-repeat-budget budget)
+           (optimize (speed 3) (safety 0) (debug 0) (space 0)))
+  suffix-array)
+
